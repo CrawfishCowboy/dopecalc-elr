@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DOPECalc ELR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>DOPECalc ELR</h1>
+    
+    <form id="dope-form">
+    <label>Saved Profiles:
+        <select id="profileSelect">
+            <option value="">-- Select Profile --</option>
+        </select>
+    </label>
+    <button type="button" id="loadProfile">Load</button>
+    <button type="button" id="saveProfile">Save Current</button><br><br>
+    
+        <label>Bullet Weight (gr): <input type="number" id="bulletWeight" value="245"></label><br>
+        <label>G7 BC: <input type="number" step="0.001" id="bc" value="0.338"></label><br>
+        <label>Muzzle Velocity (fps): <input type="number" id="velocity" value="2900"></label><br>
+        <label>Scope Height (in): <input type="number" step="0.1" id="scopeHeight" value="2.1"></label><br>
+        <label>Zero Distance (yd): <input type="number" id="zero" value="100"></label><br>
+        <label>Max Distance (yd): <input type="number" id="maxDist" value="3500"></label><br>
+        <label>Range Increment (yd): <input type="number" id="increment" value="100"></label><br>
+        <label>Density Altitude (ft): <input type="number" id="da" value="7500"></label><br>
+        <label>Wind Speed (mph): <input type="number" id="wind" value="10"></label><br>
+        <label>Latitude (°): <input type="number" id="latitude" value="40"></label><br>
+        <label>Azimuth (°): <input type="number" id="azimuth" value="0"></label><br>
+        
+    <button type="button" id="get-orientation">Get Azimuth & Elevation</button><br>
+    <label>Live Azimuth (°): <input type="number" id="liveAzimuth" readonly></label><br>
+    <label>Live Elevation (°): <input type="number" id="liveElevation" readonly></label><br><br>
+    <button type="submit">Generate DOPE</button>
+    
+    </form>
+    <pre id="output"></pre>
+    <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('serviceWorker.js');
+        }
+    </script>
+</body>
+</html>

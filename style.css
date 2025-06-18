@@ -1,0 +1,13 @@
+
+body {
+    font-family: sans-serif;
+    margin: 1em;
+}
+input {
+    width: 100px;
+}
+pre {
+    background: #f5f5f5;
+    padding: 1em;
+    overflow-x: auto;
+}

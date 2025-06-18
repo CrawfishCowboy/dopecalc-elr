@@ -1,0 +1,10 @@
+
+{
+  "name": "DOPECalc ELR",
+  "short_name": "DOPECalc",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "description": "ELR DOPE Calculator up to 3500 yards",
+  "icons": []
+}
