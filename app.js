@@ -19,19 +19,21 @@ document.getElementById('dope-form').addEventListener('submit', function (e) {
         const drop = (0.0072 * i); // placeholder drop
         const windDrift = (0.0016 * i); // placeholder wind drift
 
-        // Simplified Coriolis approximation (not exact physics)
-        const timeOfFlight = i / velocity; // seconds
-        const earthRotationRate = 7.292115e-5; // rad/s
+        // Simplified Coriolis calculation
+        const timeOfFlight = i / velocity;
+        const earthRotationRate = 7.292115e-5;
         const coriolis = 2 * velocity * earthRotationRate * Math.sin(latitude * Math.PI / 180) * timeOfFlight * Math.cos(azimuth * Math.PI / 180);
-        const coriolisMil = coriolis * 1000 / i; // convert radians to MILs approx
+        const coriolisMil = coriolis * 1000 / i;
 
-        const spinDrift = 0.0005 * i; // basic right-hand twist spin drift estimate
-output += `${i}\t${drop.toFixed(2)}\t${windDrift.toFixed(2)}\t${coriolisMil.toFixed(3)}\t${spinDrift.toFixed(2)}\n`;
+        const spinDrift = 0.0005 * i;
+
+        output += `${i}\t${drop.toFixed(2)}\t${windDrift.toFixed(2)}\t${coriolisMil.toFixed(3)}\t${spinDrift.toFixed(2)}\n`;
     }
 
     document.getElementById('output').textContent = output;
 });
 
+// Live orientation
 document.getElementById('get-orientation').addEventListener('click', () => {
     if (typeof DeviceOrientationEvent.requestPermission === 'function') {
         DeviceOrientationEvent.requestPermission()
@@ -47,7 +49,6 @@ document.getElementById('get-orientation').addEventListener('click', () => {
                 }
             }).catch(console.error);
     } else {
-        // For non-iOS devices
         window.addEventListener('deviceorientation', (event) => {
             const azimuth = event.alpha ? event.alpha.toFixed(1) : 0;
             const elevation = event.beta ? event.beta.toFixed(1) : 0;
@@ -57,59 +58,3 @@ document.getElementById('get-orientation').addEventListener('click', () => {
         });
     }
 });
-
-// Save profile
-document.getElementById('saveProfile').addEventListener('click', () => {
-    const profileName = prompt("Enter a name for this profile:");
-    if (!profileName) return;
-
-    const profile = {
-        bulletWeight: document.getElementById('bulletWeight').value,
-        bc: document.getElementById('bc').value,
-        velocity: document.getElementById('velocity').value,
-        scopeHeight: document.getElementById('scopeHeight').value,
-        zero: document.getElementById('zero').value,
-        maxDist: document.getElementById('maxDist').value,
-        increment: document.getElementById('increment').value,
-        da: document.getElementById('da').value,
-        wind: document.getElementById('wind').value,
-        latitude: document.getElementById('latitude').value,
-        azimuth: document.getElementById('azimuth').value
-    };
-
-    localStorage.setItem("profile_" + profileName, JSON.stringify(profile));
-    updateProfileDropdown();
-});
-
-// Load profile
-document.getElementById('loadProfile').addEventListener('click', () => {
-    const selected = document.getElementById('profileSelect').value;
-    if (!selected) return;
-
-    const profile = JSON.parse(localStorage.getItem("profile_" + selected));
-    if (!profile) return;
-
-    for (let key in profile) {
-        if (document.getElementById(key)) {
-            document.getElementById(key).value = profile[key];
-        }
-    }
-});
-
-// Populate dropdown
-function updateProfileDropdown() {
-    const dropdown = document.getElementById('profileSelect');
-    dropdown.innerHTML = '<option value="">-- Select Profile --</option>';
-    for (let key in localStorage) {
-        if (key.startsWith("profile_")) {
-            const name = key.replace("profile_", "");
-            const option = document.createElement("option");
-            option.value = name;
-            option.textContent = name;
-            dropdown.appendChild(option);
-        }
-    }
-}
-
-// On load
-updateProfileDropdown();
